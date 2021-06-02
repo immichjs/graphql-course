@@ -1,5 +1,22 @@
 const { ApolloServer, gql } = require('apollo-server')
 
+const users = [{
+  _id: 1,
+  name: 'João Silva',
+  email: 'jsilva@zemail.com',
+  age: 29
+}, {
+  _id: 2,
+  name: 'Rafael Junior',
+  email: 'rafajun@zemail.com',
+  age: 31
+}, {
+  _id: 3,
+  name: 'Daniela Smith',
+  email: 'danismi@zemail.com',
+  age: 24
+}]
+
 // `` é uma forma diferente de chamar uma função ES6+ 
 const typeDefs = gql`
   scalar Date
@@ -12,7 +29,7 @@ const typeDefs = gql`
   }
 
   type User {
-    _id: ID! # ID converte para String
+    _id: Int! # ID converte para String
     name: String!
     email: String!
     age: Int!
@@ -27,6 +44,9 @@ const typeDefs = gql`
     currentHour: Date
     userLogged: User
     productActive: Product
+    numerosMegaSena: [Int!]!
+    users: [User]
+    user(_id: Int): User
   }
 `
 
@@ -63,6 +83,19 @@ const resolvers = {
         price: 3333.9,
         discount: 0.1,
       }
+    },
+    numerosMegaSena() {
+      const crescente = (a, b) => a - b
+      return Array(6).fill(0)
+        .map(n => parseInt(Math.random() * (60 + 1)))
+        .sort(crescente)
+    },
+    users () {
+      return users
+    },
+    user (_, { _id }) {
+      const selecionados = users.filter(e => e._id === _id)
+      return selecionados ? selecionados[0] : null
     }
   }
 }
