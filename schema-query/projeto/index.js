@@ -17,6 +17,11 @@ const users = [{
   age: 24
 }]
 
+const perfis = [
+  { id: 1, name: 'Comum' },
+  { id: 2, name: 'Administrador' },
+]
+
 // `` é uma forma diferente de chamar uma função ES6+ 
 const typeDefs = gql`
   scalar Date
@@ -26,6 +31,11 @@ const typeDefs = gql`
     price: Float!
     discount: Float
     priceWithDiscount: Float
+  }
+
+  type Perfil {
+    id: Int!
+    name: String!
   }
 
   type User {
@@ -47,6 +57,8 @@ const typeDefs = gql`
     numerosMegaSena: [Int!]!
     users: [User]
     user(_id: Int): User
+    perfis: [Perfil]
+    perfil(id: Int): Perfil
   }
 `
 
@@ -95,6 +107,13 @@ const resolvers = {
     },
     user (_, { _id }) {
       const selecionados = users.filter(e => e._id === _id)
+      return selecionados ? selecionados[0] : null
+    },
+    perfis () {
+      return perfis
+    },
+    perfil(_, { id }) {
+      const selecionados = perfis.filter(e => e.id === id)
       return selecionados ? selecionados[0] : null
     }
   }
