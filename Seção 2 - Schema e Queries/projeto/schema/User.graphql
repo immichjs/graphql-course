@@ -1,0 +1,22 @@
+type Perfil {
+  _id: Int!
+  name: String!
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+type User {
+  _id: Float! # ID converte para String
+  name: String!
+  email: String!
+  age: Int!
+  salary: Float
+  vip: Boolean
+  # sentence: String
+  perfil: Perfil
+  status: UserStatus
+}
